@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.mydiv{
+				float: left;
+				width: 50px;
+				height: 50px;
+				background-color:#e7e7e7;
+				margin-left: 10px;
+				margin-top: 10px;
+				padding-top: 25px;
+				padding-left: 25px;
+			}
+			.newdiv{
+				float: left;
+				width: 50px;
+				height: 50px;
+				background-color:deepskyblue;
+				margin-left: 10px;
+				margin-top: 10px;
+				padding-top: 25px;
+				padding-left: 25px;
+			}
+		</style>
+	</head>
+	<body>
+		请输入产生随机数的范围：
+		<input type="text" id="num" />
+		<input type="button" value="开始创建" onclick="creatediv()" id="createbtn" />
+		产生随机数的个数：
+		<input type="text" id="rnum" />
+		<input type="button" value="产生随机数" onclick="startssq()" id="startbtn"/>
+		<input type="button" value="暂停" onclick="stopssq()" id="stopbtn"/>
+		<div id="dd"></div>
+	</body>
+	<script>
+		
+		
+		var i=1;
+		//创建所需产生随机数的范围值
+		function creatediv(){
+			var num=window.parseInt(document.getElementById("num").value);
+			var dd=document.getElementById("dd");	
+			var div=document.createElement("div");
+			div.className="mydiv";
+			div.id="div"+i;
+			div.innerText=i;
+			dd.appendChild(div);
+			i++;
+			if(i<=num){
+				setTimeout(creatediv,20);
+			}
+		}
+		var sjs=new Array();
+		//开始产生随机数
+		function startssq(){
+			document.getElementById("startbtn").disabled=true;
+			document.getElementById("stopbtn").disabled=false;
+			var num=window.parseInt(document.getElementById("num").value);
+			var rnum=window.parseInt(document.getElementById("rnum").value);
+			for(var j=0;j<rnum;j++){
+				var num1=Math.random(100)*num+1;
+				var num2=Math.floor(num1);
+				if(j==0){
+					sjs[j]=num2;
+				}else{
+					var flag=true;
+					for(var k=0;k<sjs.length;k++){
+						if(sjs[k]==num2){
+							j--;
+							flag=false;
+							break;
+						}
+					}
+					if(flag==true){
+						sjs[j]=num2;
+					}
+				}
+				
+			}
+			//还原颜色
+			for(var i=1;i<=num;i++){
+				document.getElementById("div"+i).className="mydiv";
+			}
+			for(var i=0;i<sjs.length;i++){
+				document.getElementById("div"+sjs[i]).className="newdiv";
+			}
+			tt=setTimeout(startssq,1000);
+		}
+		//停止抽取随机数
+		function stopssq(){
+			document.getElementById("stopbtn").disabled=true;
+			document.getElementById("startbtn").disabled=false;
+			clearTimeout(tt);
+		}
+	</script>
+</html>
